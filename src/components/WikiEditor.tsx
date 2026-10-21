@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Save, Eye, Edit3, Trash2, ArrowLeft } from "lucide-react";
 import MarkdownRenderer from "./MarkdownRenderer";
 import { savePage, deletePage, type WikiPage } from "@/lib/wiki-store";
 import { cn } from "@/lib/utils";
@@ -25,101 +24,97 @@ export default function WikiEditor({ page: initialPage }: Props) {
     savePage(page);
     window.dispatchEvent(new Event("wiki-updated"));
     setSaved(true);
-    setTimeout(() => setSaved(false), 2000);
+    setTimeout(() => setSaved(false), 1500);
   };
 
   const handleDelete = () => {
-    if (!confirm(`確定要刪除「${page.title}」嗎？`)) return;
+    if (!confirm(`刪除「${page.title}」？`)) return;
     deletePage(page.id);
     window.dispatchEvent(new Event("wiki-updated"));
     router.push("/");
   };
 
   return (
-    <div className="flex flex-col h-full">
-      {/* Toolbar */}
-      <div className="flex items-center justify-between gap-2 p-3 border-b border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 sticky top-0 z-10">
-        <div className="flex items-center gap-2">
+    <div className="flex flex-col h-full min-h-screen" style={{ background: "var(--bg)" }}>
+      <div
+        className="flex items-center justify-between gap-3 px-4 h-11 shrink-0 sticky top-0 z-10"
+        style={{ background: "var(--bg)", borderBottom: "1px solid var(--border)" }}
+      >
+        <div className="flex items-center gap-1 min-w-0">
           <button
             onClick={() => router.push("/")}
-            className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500"
+            className="px-2 py-1 rounded text-[13px] hover:bg-[var(--hover)] transition-colors"
+            style={{ color: "var(--fg-muted)" }}
           >
-            <ArrowLeft className="w-4 h-4" />
+            ←
           </button>
           <input
             type="text"
             value={page.title}
             onChange={(e) => setPage({ ...page, title: e.target.value })}
-            className="text-lg font-semibold bg-transparent border-none outline-none text-slate-900 dark:text-white min-w-[200px]"
-            placeholder="頁面標題"
+            className="bg-transparent outline-none text-[14px] font-medium min-w-0 truncate"
+            style={{ color: "var(--fg)" }}
+            placeholder="無標題"
           />
         </div>
 
-        <div className="flex items-center gap-1">
-          <div className="flex bg-slate-100 dark:bg-slate-800 rounded-lg p-0.5 mr-2">
-            <button
-              onClick={() => setMode("edit")}
-              className={cn(
-                "px-3 py-1.5 rounded-md text-xs font-medium transition-colors",
-                mode === "edit" ? "bg-white dark:bg-slate-700 shadow text-indigo-600" : "text-slate-500"
-              )}
-            >
-              <Edit3 className="w-3.5 h-3.5 inline mr-1" />
-              編輯
-            </button>
-            <button
-              onClick={() => setMode("split")}
-              className={cn(
-                "px-3 py-1.5 rounded-md text-xs font-medium transition-colors",
-                mode === "split" ? "bg-white dark:bg-slate-700 shadow text-indigo-600" : "text-slate-500"
-              )}
-            >
-              分割
-            </button>
-            <button
-              onClick={() => setMode("preview")}
-              className={cn(
-                "px-3 py-1.5 rounded-md text-xs font-medium transition-colors",
-                mode === "preview" ? "bg-white dark:bg-slate-700 shadow text-indigo-600" : "text-slate-500"
-              )}
-            >
-              <Eye className="w-3.5 h-3.5 inline mr-1" />
-              預覽
-            </button>
+        <div className="flex items-center gap-1 shrink-0">
+          <div className="flex rounded-md p-0.5" style={{ background: "var(--hover)" }}>
+            {(["edit", "split", "preview"] as const).map((m) => (
+              <button
+                key={m}
+                onClick={() => setMode(m)}
+                className={cn(
+                  "px-2.5 py-1 rounded text-[12px] transition-colors",
+                  mode === m ? "bg-[var(--bg)] shadow-sm font-medium" : ""
+                )}
+                style={{ color: mode === m ? "var(--fg)" : "var(--fg-muted)" }}
+              >
+                {m === "edit" ? "編輯" : m === "split" ? "分割" : "預覽"}
+              </button>
+            ))}
           </div>
 
           <button
             onClick={handleSave}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium transition-colors"
+            className="ml-1 px-3 py-1 rounded-md text-[13px] font-medium transition-colors"
+            style={{
+              background: saved ? "transparent" : "var(--accent)",
+              color: saved ? "var(--fg-muted)" : "#fff",
+            }}
           >
-            <Save className="w-4 h-4" />
             {saved ? "已儲存" : "儲存"}
           </button>
+
           <button
             onClick={handleDelete}
-            className="p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/30 text-red-500"
-            title="刪除頁面"
+            className="px-2 py-1 rounded text-[13px] hover:bg-red-50 dark:hover:bg-red-950/40 transition-colors"
+            style={{ color: "var(--fg-muted)" }}
+            title="刪除"
           >
-            <Trash2 className="w-4 h-4" />
+            刪除
           </button>
         </div>
       </div>
 
-      {/* Editor / Preview */}
       <div className="flex-1 flex overflow-hidden">
         {(mode === "edit" || mode === "split") && (
-          <div className={cn("flex-1 overflow-auto", mode === "split" && "border-r border-slate-200 dark:border-slate-700")}>
+          <div
+            className={cn("flex-1 overflow-auto", mode === "split" && "border-r")}
+            style={{ borderColor: "var(--border)" }}
+          >
             <textarea
               value={page.content}
               onChange={(e) => setPage({ ...page, content: e.target.value })}
-              className="w-full h-full p-6 resize-none bg-transparent outline-none font-mono text-sm leading-relaxed text-slate-800 dark:text-slate-200"
-              placeholder="使用 Markdown 開始寫作..."
+              className="w-full h-full min-h-[calc(100vh-44px)] resize-none bg-transparent outline-none font-mono text-[14px] leading-relaxed p-8 md:px-[max(2rem,calc(50%-360px))]"
+              style={{ color: "var(--fg)" }}
+              placeholder="開始寫作..."
               spellCheck={false}
             />
           </div>
         )}
         {(mode === "preview" || mode === "split") && (
-          <div className="flex-1 overflow-auto p-6">
+          <div className="flex-1 overflow-auto p-8 md:px-[max(2rem,calc(50%-360px))]">
             <MarkdownRenderer content={page.content} />
           </div>
         )}
