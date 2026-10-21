@@ -36,11 +36,11 @@ const DEFAULT_PAGES: WikiPage[] = [
 
 ### 標題
 
-\\`\\`\\`markdown
+\`\`\`markdown
 # 一級標題
 ## 二級標題
 ### 三級標題
-\\`\\`\\`
+\`\`\`
 
 ### 列表
 
@@ -53,9 +53,9 @@ const DEFAULT_PAGES: WikiPage[] = [
 
 ### 程式碼
 
-\\`\\`\\`javascript
+\`\`\`javascript
 console.log("Hello, OPM WIKI!");
-\\`\\`\\`
+\`\`\`
 
 ### 表格
 
