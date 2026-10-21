@@ -3,10 +3,8 @@ import "./globals.css";
 import Sidebar from "@/components/Sidebar";
 
 export const metadata: Metadata = {
-  title: "OPM WIKI - OpenSource Markdown Wiki",
-  description:
-    "OPM WIKI (OpenSourceMarkdownWIKI) - 完全開源的 Markdown 維基架設平台，像 Notion 一樣好用，但完全開源。",
-  keywords: ["wiki", "markdown", "notion", "opensource", "knowledge base"],
+  title: "OPM WIKI",
+  description: "OpenSource Markdown Wiki — 開源 Markdown 知識庫",
 };
 
 export default function RootLayout({
@@ -19,7 +17,7 @@ export default function RootLayout({
       <body className="antialiased">
         <div className="flex min-h-screen">
           <Sidebar />
-          <main className="flex-1 overflow-auto">{children}</main>
+          <main className="flex-1 min-w-0 overflow-auto">{children}</main>
         </div>
       </body>
     </html>
