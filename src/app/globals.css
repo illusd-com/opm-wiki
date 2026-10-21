@@ -1,0 +1,93 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #ffffff;
+  --foreground: #0f172a;
+}
+
+.dark {
+  --background: #0f172a;
+  --foreground: #f8fafc;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* Markdown prose styles */
+.prose {
+  @apply text-slate-800 dark:text-slate-200 leading-relaxed;
+}
+
+.prose h1 {
+  @apply text-3xl font-bold mt-8 mb-4 text-slate-900 dark:text-white;
+}
+
+.prose h2 {
+  @apply text-2xl font-semibold mt-6 mb-3 text-slate-900 dark:text-white border-b border-slate-200 dark:border-slate-700 pb-2;
+}
+
+.prose h3 {
+  @apply text-xl font-semibold mt-5 mb-2 text-slate-800 dark:text-slate-100;
+}
+
+.prose p {
+  @apply my-3;
+}
+
+.prose ul {
+  @apply list-disc pl-6 my-3;
+}
+
+.prose ol {
+  @apply list-decimal pl-6 my-3;
+}
+
+.prose li {
+  @apply my-1;
+}
+
+.prose a {
+  @apply text-indigo-600 dark:text-indigo-400 underline hover:text-indigo-800 dark:hover:text-indigo-300;
+}
+
+.prose code {
+  @apply bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-sm font-mono text-pink-600 dark:text-pink-400;
+}
+
+.prose pre {
+  @apply bg-slate-900 text-slate-100 p-4 rounded-lg overflow-x-auto my-4 text-sm;
+}
+
+.prose pre code {
+  @apply bg-transparent p-0 text-inherit;
+}
+
+.prose blockquote {
+  @apply border-l-4 border-indigo-500 pl-4 italic text-slate-600 dark:text-slate-400 my-4;
+}
+
+.prose table {
+  @apply w-full border-collapse my-4;
+}
+
+.prose th,
+.prose td {
+  @apply border border-slate-300 dark:border-slate-600 px-3 py-2 text-left;
+}
+
+.prose th {
+  @apply bg-slate-100 dark:bg-slate-800 font-semibold;
+}
+
+.prose img {
+  @apply rounded-lg max-w-full my-4;
+}
+
+.prose hr {
+  @apply my-8 border-slate-300 dark:border-slate-600;
+}
